@@ -12,6 +12,7 @@ bool g_bBlocked[MAXPLAYERS + 1] =  { false, ... };
 
 ConVar g_cTag = null;
 ConVar g_cDebug = null;
+ConVar g_cDatabase = null;
 
 Database g_dDB = null;
 
@@ -50,10 +51,9 @@ public void OnPluginStart()
     AutoExecConfig_SetFile("plugin.cablock");
     g_cDebug = AutoExecConfig_CreateConVar("cablock_debug", "0", "Enable debug mode to log all queries", _, true, 0.0, true, 1.0);
     g_cTag = AutoExecConfig_CreateConVar("cablock_plugin_tag", "{darkblue}[CA-Block]{default}", "Chat Tag for every message from this plugin");
+    g_cDatabase = AutoExecConfig_CreateConVar("cablock_database", "cablock", "Which database should be used? This name must exist in your databases.cfg!");
     AutoExecConfig_ExecuteFile();
     AutoExecConfig_CleanFile();
-    
-    connectSQL();
 
     RegAdminCmd("sm_cablock", Command_CABlock, ADMFLAG_GENERIC);
     RegAdminCmd("sm_caunblock", Command_CAUnBlock, ADMFLAG_GENERIC);
@@ -66,14 +66,13 @@ public void OnConfigsExecuted()
     char sBuffer[128];
     g_cTag.GetString(sBuffer, sizeof(sBuffer));
     CSetPrefix(sBuffer);
-}
 
-public void OnMapStart()
-{
-    if (g_dDB == null)
+    if (g_dDB != null)
     {
-        connectSQL();
+        delete g_dDB;
     }
+
+    connectSQL();
 }
 
 public void OnClientPostAdminCheck(int client)
@@ -343,13 +342,16 @@ stock bool IsClientValid(int client, bool bots = false)
 
 void connectSQL()
 {
-    if (SQL_CheckConfig("sourcebans"))
+    char sDatabase[64];
+    g_cDatabase.GetString(sDatabase, sizeof(sDatabase));
+
+    if (SQL_CheckConfig(sDatabase))
     {
-        Database.Connect(OnSQLConnect, "sourcebans");
+        Database.Connect(OnSQLConnect, sDatabase);
     }
     else
     {
-        SetFailState("Can't find an entry in your databases.cfg with the name \"sourcebans\"");
+        SetFailState("Can't find an entry in your databases.cfg with the name \"%s\"", sDatabase);
         return;
     }
 }
