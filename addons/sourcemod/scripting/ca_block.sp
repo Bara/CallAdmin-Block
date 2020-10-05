@@ -162,10 +162,7 @@ public Action Command_CABlock(int client, int args)
             Format(sAdmin, sizeof(sAdmin), "CONSOLE");
         }
 
-        g_dDB.Escape(sName, sName, sizeof(sName));
-        g_dDB.Escape(sAdmin, sAdmin, sizeof(sAdmin));
-
-        Format(sQuery, sizeof(sQuery), "INSERT INTO `cablock` (`time`, `action`, `steamid`, `name`, `admin`, `adminName`, `blocked`) VALUES (UNIX_TIMESTAMP(), \"block\", \"%s\", \"%s\", \"%s\", \"%s\", '1');", sID, sName, sAID, sAdmin);
+        g_dDB.Format(sQuery, sizeof(sQuery), "INSERT INTO `cablock` (`time`, `action`, `steamid`, `name`, `admin`, `adminName`, `blocked`) VALUES (UNIX_TIMESTAMP(), \"block\", \"%s\", \"%s\", \"%s\", \"%s\", '1');", sID, sName, sAID, sAdmin);
         
         if (g_cDebug.BoolValue)
         {
@@ -222,10 +219,7 @@ public Action Command_CAUnBlock(int client, int args)
             Format(sAdmin, sizeof(sAdmin), "CONSOLE");
         }
 
-        g_dDB.Escape(sName, sName, sizeof(sName));
-        g_dDB.Escape(sAdmin, sAdmin, sizeof(sAdmin));
-
-        Format(sQuery, sizeof(sQuery), "UPDATE `cablock` SET `time` = UNIX_TIMESTAMP(), `action` = \"unblock\", `name` = \"%s\", `admin` = \"%s\", `adminName` = \"%s\", `blocked` = '0' WHERE steamid = \"%s\" ORDER BY id DESC LIMIT 1;", sName, sAID, sAdmin, sID);
+        g_dDB.Format(sQuery, sizeof(sQuery), "UPDATE `cablock` SET `time` = UNIX_TIMESTAMP(), `action` = \"unblock\", `name` = \"%s\", `admin` = \"%s\", `adminName` = \"%s\", `blocked` = '0' WHERE steamid = \"%s\" ORDER BY id DESC LIMIT 1;", sName, sAID, sAdmin, sID);
 
         if (g_cDebug.BoolValue)
         {
@@ -273,10 +267,7 @@ public Action Command_CABlockOff(int client, int args)
         Format(sAdmin, sizeof(sAdmin), "CONSOLE");
     }
 
-    g_dDB.Escape(sName, sName, sizeof(sName));
-    g_dDB.Escape(sAdmin, sAdmin, sizeof(sAdmin));
-
-    Format(sQuery, sizeof(sQuery), "INSERT INTO `cablock` (`time`, `action`, `steamid`, `name`, `admin`, `adminName`, `blocked`) VALUES (UNIX_TIMESTAMP(), \"block\", \"%s\", \"%s\", \"%s\", \"%s\", '1');", sID, sName, sAID, sAdmin);
+    g_dDB.Format(sQuery, sizeof(sQuery), "INSERT INTO `cablock` (`time`, `action`, `steamid`, `name`, `admin`, `adminName`, `blocked`) VALUES (UNIX_TIMESTAMP(), \"block\", \"%s\", \"%s\", \"%s\", \"%s\", '1');", sID, sName, sAID, sAdmin);
     
     if (g_cDebug.BoolValue)
     {
@@ -323,10 +314,7 @@ public Action Command_CAUnBlockOff(int client, int args)
         Format(sAdmin, sizeof(sAdmin), "CONSOLE");
     }
 
-    g_dDB.Escape(sName, sName, sizeof(sName));
-    g_dDB.Escape(sAdmin, sAdmin, sizeof(sAdmin));
-
-    Format(sQuery, sizeof(sQuery), "UPDATE `cablock` SET `time` = UNIX_TIMESTAMP(), `action` = \"unblock\", `name` = \"%s\", `admin` = \"%s\", `adminName` = \"%s\", `blocked` = '0' WHERE steamid = \"%s\" ORDER BY id DESC LIMIT 1;", sName, sAID, sAdmin, sID);
+    g_dDB.Format(sQuery, sizeof(sQuery), "UPDATE `cablock` SET `time` = UNIX_TIMESTAMP(), `action` = \"unblock\", `name` = \"%s\", `admin` = \"%s\", `adminName` = \"%s\", `blocked` = '0' WHERE steamid = \"%s\" ORDER BY id DESC LIMIT 1;", sName, sAID, sAdmin, sID);
     
     if (g_cDebug.BoolValue)
     {
