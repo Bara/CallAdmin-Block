@@ -8,11 +8,10 @@
 
 #define LoopClients(%1) for(int %1 = 1; %1 <= MaxClients; %1++) if(IsClientValid(%1))
 
-bool g_bDebug = true;
-
 bool g_bBlocked[MAXPLAYERS + 1] =  { false, ... };
 
 ConVar g_cTag = null;
+ConVar g_cDebug = null;
 
 Database g_dDB = null;
 
@@ -49,7 +48,8 @@ public void OnPluginStart()
     AutoExecConfig_SetCreateDirectory(true);
     AutoExecConfig_SetCreateFile(true);
     AutoExecConfig_SetFile("plugin.cablock");
-    g_cTag = AutoExecConfig_CreateConVar("cablock_plugin_tag", "{darkblue}[CABlock]{default}", "Chat Tag for every message from this plugin");
+    g_cDebug = AutoExecConfig_CreateConVar("cablock_debug", "0", "Enable debug mode to log all queries", _, true, 0.0, true, 1.0);
+    g_cTag = AutoExecConfig_CreateConVar("cablock_plugin_tag", "{darkblue}[CA-Block]{default}", "Chat Tag for every message from this plugin");
     AutoExecConfig_ExecuteFile();
     AutoExecConfig_CleanFile();
     
@@ -101,7 +101,7 @@ stock void CheckClient(int client)
     char sQuery[512];
     Format(sQuery, sizeof(sQuery), "SELECT blocked FROM cablock WHERE steamid = \"%s\" ORDER BY id DESC LIMIT 1;", sSteamID);
     
-    if (g_bDebug)
+    if (g_cDebug.BoolValue)
     {
         LogMessage(sQuery);
     }
@@ -167,7 +167,7 @@ public Action Command_CABlock(int client, int args)
 
         Format(sQuery, sizeof(sQuery), "INSERT INTO `cablock` (`time`, `action`, `steamid`, `name`, `admin`, `adminName`, `blocked`) VALUES (UNIX_TIMESTAMP(), \"block\", \"%s\", \"%s\", \"%s\", \"%s\", '1');", sID, sName, sAID, sAdmin);
         
-        if (g_bDebug)
+        if (g_cDebug.BoolValue)
         {
             LogMessage(sQuery);
         }
@@ -227,7 +227,7 @@ public Action Command_CAUnBlock(int client, int args)
 
         Format(sQuery, sizeof(sQuery), "UPDATE `cablock` SET `time` = UNIX_TIMESTAMP(), `action` = \"unblock\", `name` = \"%s\", `admin` = \"%s\", `adminName` = \"%s\", `blocked` = '0' WHERE steamid = \"%s\" ORDER BY id DESC LIMIT 1;", sName, sAID, sAdmin, sID);
 
-        if (g_bDebug)
+        if (g_cDebug.BoolValue)
         {
             LogMessage(sQuery);
         }
@@ -278,7 +278,7 @@ public Action Command_CABlockOff(int client, int args)
 
     Format(sQuery, sizeof(sQuery), "INSERT INTO `cablock` (`time`, `action`, `steamid`, `name`, `admin`, `adminName`, `blocked`) VALUES (UNIX_TIMESTAMP(), \"block\", \"%s\", \"%s\", \"%s\", \"%s\", '1');", sID, sName, sAID, sAdmin);
     
-    if (g_bDebug)
+    if (g_cDebug.BoolValue)
     {
         LogMessage(sQuery);
     }
@@ -328,7 +328,7 @@ public Action Command_CAUnBlockOff(int client, int args)
 
     Format(sQuery, sizeof(sQuery), "UPDATE `cablock` SET `time` = UNIX_TIMESTAMP(), `action` = \"unblock\", `name` = \"%s\", `admin` = \"%s\", `adminName` = \"%s\", `blocked` = '0' WHERE steamid = \"%s\" ORDER BY id DESC LIMIT 1;", sName, sAID, sAdmin, sID);
     
-    if (g_bDebug)
+    if (g_cDebug.BoolValue)
     {
         LogMessage(sQuery);
     }
@@ -394,7 +394,7 @@ void CreateTable()
         PRIMARY KEY (`id`) \
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
     
-    if (g_bDebug)
+    if (g_cDebug.BoolValue)
     {
         LogMessage(sQuery);
     }
