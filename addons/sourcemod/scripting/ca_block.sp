@@ -408,7 +408,7 @@ public void SQL_CreateTable(Database db, DBResultSet results, const char[] error
     }
 }
 
-public void SQL_CheckClient(Database db, DBResultSet results, const char[] error, any data)
+public void SQL_CheckClient(Database db, DBResultSet results, const char[] error, int userid)
 {
     if (db == null || strlen(error) > 0)
     {
@@ -417,7 +417,7 @@ public void SQL_CheckClient(Database db, DBResultSet results, const char[] error
     }
     else
     {
-        int client = GetClientOfUserId(data);
+        int client = GetClientOfUserId(userid);
 
         if (IsClientValid(client))
         {
@@ -429,7 +429,7 @@ public void SQL_CheckClient(Database db, DBResultSet results, const char[] error
     }
 }
 
-public void SQL_InsertBlock(Database db, DBResultSet results, const char[] error, any data)
+public void SQL_InsertBlock(Database db, DBResultSet results, const char[] error, int userid)
 {
     if (db == null || strlen(error) > 0)
     {
@@ -438,7 +438,7 @@ public void SQL_InsertBlock(Database db, DBResultSet results, const char[] error
     }
     else
     {
-        int target = GetClientOfUserId(data);
+        int target = GetClientOfUserId(userid);
 
         if (IsClientValid(target))
         {
@@ -456,7 +456,7 @@ public void SQL_InsertBlockOff(Database db, DBResultSet results, const char[] er
     }
 }
 
-public void SQL_UpdateBlock(Database db, DBResultSet results, const char[] error, any data)
+public void SQL_UpdateBlock(Database db, DBResultSet results, const char[] error, int userid)
 {
     if (db == null || strlen(error) > 0)
     {
@@ -465,7 +465,7 @@ public void SQL_UpdateBlock(Database db, DBResultSet results, const char[] error
     }
     else
     {
-        int target = GetClientOfUserId(data);
+        int target = GetClientOfUserId(userid);
 
         if (IsClientValid(target))
         {
