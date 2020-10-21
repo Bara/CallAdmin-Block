@@ -124,7 +124,7 @@ public Action Command_CABlock(int client, int args)
     if (args != 1)
     {
         CReplyToCommand(client, "sm_cablock <#UserID/Name>");
-        CReplyToCommand(client, "Alternative: sm_cablockoff <SteamID (example: STEAM_1:X:XXXXXX>");
+        CReplyToCommand(client, "Alternative: sm_cablockoff <SteamID (example: STEAM_1:X:XXXXXX>)");
         return Plugin_Handled;
     }
 
@@ -163,6 +163,7 @@ public Action Command_CABlock(int client, int args)
 
         g_dDB.Format(sQuery, sizeof(sQuery), "INSERT INTO `cablock` (`time`, `action`, `steamid`, `name`, `admin`, `adminName`, `blocked`) VALUES (UNIX_TIMESTAMP(), \"block\", \"%s\", \"%s\", \"%s\", \"%s\", '1');", sID, sName, sAID, sAdmin);
         
+        #error hi
         if (g_cDebug.BoolValue)
         {
             LogMessage(sQuery);
@@ -181,7 +182,7 @@ public Action Command_CAUnBlock(int client, int args)
     if (args != 1)
     {
         CReplyToCommand(client, "sm_caunblock <#UserID/Name>");
-        CReplyToCommand(client, "Alternative: sm_caunblockoff <SteamID (example: STEAM_1:X:XXXXXX>");
+        CReplyToCommand(client, "Alternative: sm_caunblockoff <SteamID (example: STEAM_1:X:XXXXXX>)");
         return Plugin_Handled;
     }
 
